@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/node_modules
+/.elasticbeanstalk
+/www/Archive.zip
+/www/server.js.map
+/www
+/.vs
