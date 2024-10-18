@@ -22,8 +22,8 @@ const Jimp = require('jimp');
         .resize(256, 256) // resize
         .quality(60) // set JPEG quality
         .greyscale() // set greyscale
-        .write(outpath, (img: any) => {
-          resolve(outpath);
+        .write(__dirname + outpath, (img: any) => {
+          resolve(__dirname + outpath);
         });
     } catch (error) {
       reject(error);

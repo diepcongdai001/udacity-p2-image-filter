@@ -29,7 +29,7 @@ const fs = require('fs');
   
     /**************************************************************************** */
     // app.use(express.json());
-  
+    const path_save:string = "/util/tmp/";
     app.get('/filteredimage', async (req: Request, res: Response, next: NextFunction) => {
         const { image_url } = req.query;
     
@@ -39,10 +39,10 @@ const fs = require('fs');
         try {
             let absolutePath: string = await filterImageFromURL(image_url.toString()) as string;
             res.sendFile(absolutePath);
-            fs.readdir(absolutePath, (err: Error, files: string[]) => {
+            fs.readdir(__dirname + path_save, (err: Error, files: string[]) => {
               const fileList: string[] = [];
               files.forEach((file: string) => {
-                fileList.push(absolutePath + file);
+                fileList.push(__dirname + path_save + file);
               });
               deleteLocalFiles(fileList);
             });
