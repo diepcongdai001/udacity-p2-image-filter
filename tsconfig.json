@@ -3,7 +3,6 @@
     "target": "ES6", // Specify the target ECMAScript version
     "module": "commonjs", // Specify the module system
     "outDir": "./www", // Specify the output directory for compiled JavaScript
-    "rootDir": "./src",
     "sourceMap": true, // Generate source maps for debugging
     "strict": true, // Enable strict type checking
     "noImplicitAny": true, /* Raise error on expressions and declarations with an implied 'any' type. */
@@ -21,9 +20,6 @@
     "emitDecoratorMetadata": true, /* Enables experimental support for emitting type metadata for decorators. */      
   },
   "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules" /* Specify directories to exclude from compilation (e.g., node_modules) */
+    "src/**/*.ts"
   ]
 }
