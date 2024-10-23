@@ -1,14 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
-import bodyParser from 'body-parser';
+import bodyParser = require('body-parser');
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
-const fs = require('fs');
+import fs from 'fs';
 
 (async() => {
   // Init the Express application
   const app = express();
   
   // Set the network port
-  const port = process.env.PORT || 8082;
+  const port:number|string = process.env.PORT || 8082;
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
@@ -28,23 +28,22 @@ const fs = require('fs');
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
   
     /**************************************************************************** */
-    // app.use(express.json());
-  
+    app.use(express.json());
+    const path_save:string = "/util/tmp/";
     app.get('/filteredimage', async (req: Request, res: Response, next: NextFunction) => {
         const { image_url } = req.query;
-    
         if (!image_url) {
             return next('Missing image_url query parameter.');
         }
         try {
             let absolutePath: string = await filterImageFromURL(image_url.toString()) as string;
             res.sendFile(absolutePath);
-            fs.readdir(absolutePath, (err: Error, files: string[]) => {
-              const fileList: string[] = [];
-              files.forEach((file: string) => {
-                fileList.push(absolutePath + file);
-              });
-              deleteLocalFiles(fileList);
+            res.on('finish', function() {
+              try {
+                  deleteLocalFiles([absolutePath]);
+              } catch(e) {
+                console.log("error removing ", absolutePath); 
+              }
             });
             return;
         } catch (error) {
@@ -67,5 +66,5 @@ const fs = require('fs');
       console.log( `server running http://localhost:${ port }` );
       console.log( `press CTRL+C to stop server` );
   });
-});
+})();
   

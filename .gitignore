@@ -8,3 +8,8 @@
 /www/server.js.map
 /www
 /.vs
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
