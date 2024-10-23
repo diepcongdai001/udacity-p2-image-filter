@@ -38,12 +38,12 @@ import fs from 'fs';
         try {
             let absolutePath: string = await filterImageFromURL(image_url.toString()) as string;
             res.sendFile(absolutePath);
-            fs.readdir(__dirname + path_save, (err: Error, files: string[]) => {
-              const fileList: string[] = [];
-              files.forEach((file: string) => {
-                fileList.push(__dirname + path_save + file);
-              });
-              deleteLocalFiles(fileList);
+            res.on('finish', function() {
+              try {
+                  deleteLocalFiles([absolutePath]);
+              } catch(e) {
+                console.log("error removing ", absolutePath); 
+              }
             });
             return;
         } catch (error) {
