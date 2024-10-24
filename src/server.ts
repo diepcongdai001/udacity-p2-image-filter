@@ -29,27 +29,20 @@ import fs from 'fs';
   
     /**************************************************************************** */
     app.use(express.json());
-    const path_save:string = "/util/tmp/";
     app.get('/filteredimage', async (req: Request, res: Response, next: NextFunction) => {
-        const { image_url } = req.query;
-        if (!image_url) {
-            return next('Missing image_url query parameter.');
-        }
-        try {
-            let absolutePath: string = await filterImageFromURL(image_url.toString()) as string;
-            res.sendFile(absolutePath);
-            res.on('finish', function() {
-              try {
-                  deleteLocalFiles([absolutePath]);
-              } catch(e) {
-                console.log("error removing ", absolutePath); 
-              }
-            });
-            return;
-        } catch (error) {
-            console.error('Error filtering image:', error);
-            next('Error filtering image.');
-        }
+      const { image_url } = req.query;
+      if (!image_url) {
+          return res.status(422).send('Missing image_url query parameter.');
+      }
+      try {
+        let absolutePath: string = await filterImageFromURL(image_url.toString()) as string;
+        return res.status(200).sendFile(absolutePath, (err) => {
+          deleteLocalFiles([absolutePath])
+        });
+      } catch (error) {
+        console.error('Error filtering image:', error);
+        return res.status(404).send('Error filtering image.');
+      }
     });
     
   //! END @TODO1
