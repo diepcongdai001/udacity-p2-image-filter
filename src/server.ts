@@ -29,7 +29,7 @@ import fs from 'fs';
   
     /**************************************************************************** */
     app.use(express.json());
-    app.get('/filteredimage', async (req: Request, res: Response, next: NextFunction) => {
+    app.get('/filteredimage', async (req: Request, res: Response, next: NextFunction): Promise<any> => {
       const { image_url } = req.query;
       if (!image_url) {
           return res.status(422).send('Missing image_url query parameter.');
